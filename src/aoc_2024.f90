@@ -235,4 +235,15 @@ contains
        end if
     end subroutine quicksort
 
+    subroutine getfile(filename,str)
+       character(len=*),intent(in)::filename
+       character(len=:),allocatable::str
+       integer::unit,length
+       open (newunit=unit, file=filename, status='old', action='read', &
+          access='stream', form='unformatted')
+       inquire (unit, size=length)
+       allocate(character(len=length)::str)
+       read(unit)str
+       close(unit)
+    end subroutine getfile
  end module aoc_2024
