@@ -70,6 +70,22 @@ contains
       res=buffer(pos:)
    end function tostring
 
+    function form(format,nums)result(res)
+        character(len=*),intent(in)::format
+        integer,intent(in)::nums(:)
+        character(len=:),allocatable::res
+        integer::idx,i
+        res=format
+        i=0
+        do
+            idx=index(res,"<>")
+            if(idx==0)exit
+            i=i+1
+            if(i>size(nums))error stop "The size of array 'nums' less than the number of '<>'"
+            res=res(:idx-1)//tostring(nums(i))//res(idx+2:)        
+        end do
+    end function form
+
    !> description : convert string to integer(4)
    !>
    !> example     : tonum('123') => 123
