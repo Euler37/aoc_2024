@@ -60,7 +60,7 @@ contains
          idy=idx+move(:,k)
          if(.not.all(idy<=n.and.idy>=1))exit
          if(ps(idy(1),idy(2))=="#")then
-            ! if move to site i more than once with same direction, then in loop 
+            ! if move to site i with same direction twice, then in loop 
             if(visit(idx(1),idx(2),k)==1)then
                res=.true.
                ps(ix,iy)="."
