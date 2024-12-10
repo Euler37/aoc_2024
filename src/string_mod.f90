@@ -16,6 +16,7 @@ module string_mod
    end interface
 
 contains
+
    elemental integer function size_string(this)result(res)
       class(string),intent(in)::this
       res=len(this%str)
@@ -44,7 +45,6 @@ contains
       character(len=*),intent(in)::sep
       logical,intent(in)::skip
       type(string),allocatable::res(:)
-      type(string),allocatable::cap(:)
       type(string)::tmp
       integer::start,end,l,ls,i,num
       start=1
@@ -56,22 +56,17 @@ contains
          start=end
          if(skip)then
             do i=end,ls,l
-               if(str(i:i+l-1)==sep)then
-                  start=start+l
-               else
-                  exit
-               end if
+               if(.not.str(i:i+l-1)==sep)exit
+               start=start+l
             end do
          end if
          end=index(str(start:),sep)
          if(end==0)exit
          end=end+start-1
-         tmp=str(start:end-1)
          num=num+1
          end=end+l
       end do
       if(ls>=start)then
-         tmp=str(start:ls)
          num=num+1
       end if
       allocate(res(num))
@@ -82,11 +77,8 @@ contains
          start=end
          if(skip)then
             do i=end,ls,l
-               if(str(i:i+l-1)==sep)then
-                  start=start+l
-               else
-                  exit
-               end if
+               if(.not.str(i:i+l-1)==sep)exit
+               start=start+l
             end do
          end if
          end=index(str(start:),sep)
