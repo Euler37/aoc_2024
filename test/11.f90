@@ -2,30 +2,28 @@ program main
    use aoc_2024
    implicit none
    character(len=100)::str
-   integer::n,i,l
+   integer::n,i
    integer(8),allocatable::a(:)
-   integer(8)::tmp,res
-   character(len=:),allocatable::nums
+   integer(8)::res
    integer,parameter::MM=100000
    integer(8)::path(0:MM,75)
-   
    open(10,file="data/11.txt")
    read(10,"(A)")str
    close(10)
    n=getcolnum(str)
    allocate(a(n))
    read(str,*)a
-   res=0
    path=0
+   ! part 1
+   res=0
    do i=1,n
-      tmp=num(a(i),25)
-      res=res+tmp
+      res=res+num(a(i),25)
    end do
    print*,res
+   ! part 2
    res=0
    do i=1,n
-      tmp=num(a(i),75)
-      res=res+tmp
+      res=res+num(a(i),75)
    end do
    print*,res
 contains
@@ -34,6 +32,8 @@ contains
       integer(8),value::a
       integer,value::i
       integer(8)::tmp,tmp2
+      integer::l
+      character(len=:),allocatable::nums
       if(i==0)then
          res=1
          return
@@ -55,8 +55,6 @@ contains
             else
                res=num(tmp,i-1)
             end if
-            nums=tostring(a)
-            l=len(nums)
             tmp=tonum(nums(l/2+1:))
             if(tmp <= MM .and. i>1)then
                if(path(tmp,i-1)==0 )then
