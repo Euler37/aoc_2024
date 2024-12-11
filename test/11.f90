@@ -46,23 +46,15 @@ contains
          if(mod(l,2)==0)then
             tmp=tonum(nums(1:l/2))
             if(tmp <= MM .and. i>1)then
-               if(path(tmp,i-1)==0)then
-                  res=num(tmp,i-1)
-                  path(tmp,i-1)=res
-               else
-                  res=path(tmp,i-1)
-               end if
+               if(path(tmp,i-1)==0) path(tmp,i-1)=num(tmp,i-1)
+               res=path(tmp,i-1)
             else
                res=num(tmp,i-1)
             end if
             tmp=tonum(nums(l/2+1:))
             if(tmp <= MM .and. i>1)then
-               if(path(tmp,i-1)==0 )then
-                  tmp2=num(tmp,i-1)
-                  path(tmp,i-1)=tmp2
-               else
-                  tmp2=path(tmp,i-1)
-               end if
+               if(path(tmp,i-1)==0 ) path(tmp,i-1)=num(tmp,i-1)
+               tmp2=path(tmp,i-1)
             else
                tmp2=num(tmp,i-1)
             end if
