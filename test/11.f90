@@ -2,8 +2,8 @@ program main
    use aoc_2024
    implicit none
    character(len=100)::str
-   integer::n,m,l,i,j,k
-   integer(8),allocatable::a(:),b(:)
+   integer::n,i,l
+   integer(8),allocatable::a(:)
    integer(8)::tmp,res
    character(len=:),allocatable::nums
    integer,parameter::MM=100000
@@ -42,7 +42,7 @@ contains
          res=num(1_8,i-1)
       else
          nums=tostring(a)
-         l=len_trim(nums)
+         l=len(nums)
          if(mod(l,2)==0)then
             tmp=tonum(nums(1:l/2))
             if(tmp <= MM .and. i>1)then
