@@ -5,7 +5,7 @@ program main
    integer::n,i
    integer(8),allocatable::a(:)
    integer(8)::res
-   integer,parameter::MM=100000
+   integer,parameter::MM=1024
    integer(8)::path(0:MM,75)
    open(10,file="data/11.txt")
    read(10,"(A)")str
