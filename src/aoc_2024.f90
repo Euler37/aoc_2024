@@ -1,5 +1,9 @@
 module aoc_2024
   implicit none
+  interface tostring
+     module procedure tostring32
+     module procedure tostring64
+  end interface
 contains
    subroutine replace(str,b,c)
       character(len=*),intent(inout)::str
@@ -44,7 +48,7 @@ contains
       end if
    end function strtol
 
-   pure function tostring(value)result(res)
+   pure function tostring32(value)result(res)
       integer(4),intent(in)      :: value
       character(len=:),allocatable :: res
       integer(4),parameter       :: buffer_len=range(value)+2
@@ -68,7 +72,34 @@ contains
          buffer(pos:pos)="-"
       end if
       res=buffer(pos:)
-   end function tostring
+   end function tostring32
+
+   pure function tostring64(value)result(res)
+      integer(8),intent(in)      :: value
+      character(len=:),allocatable :: res
+      integer(4),parameter       :: buffer_len=range(value)+2
+      character(len=buffer_len)  :: buffer
+      integer(4)                 :: pos
+      integer(8)                 ::n
+      character(len=1),parameter   :: numbers(0:9)=["0","1","2","3","4","5","6","7","8","9"]
+      if(value == 0)then
+         res = numbers(0)
+         return
+      end if
+      n=abs(value)
+      buffer=""
+      pos=buffer_len+1
+      do while(n > 0)
+         pos=pos-1
+         buffer(pos:pos)=numbers(mod(n,10))
+         n=n/10
+      end do
+      if(value < 0)then
+         pos=pos-1
+         buffer(pos:pos)="-"
+      end if
+      res=buffer(pos:)
+   end function tostring64
 
     function form(format,nums)result(res)
         character(len=*),intent(in)::format
@@ -104,6 +135,7 @@ contains
       end do
       res=res*sign1
    end function tonum
+
 
    function getrow(filename) result(res)
       character(len=*),intent(in)::filename
