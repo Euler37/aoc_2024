@@ -1,8 +1,7 @@
 program main
    use aoc_2024
-   use string_mod
    implicit none
-   character(len=*),parameter::filename="data/12.txt"
+   character(len=*),parameter::filename="12.txt"
    character,allocatable::a(:,:)
    integer::n,i,idx(2),length,area,j,res,tag,k
    integer,allocatable::flag(:,:)
@@ -18,6 +17,7 @@ program main
    close(10)
    flag=0
    res=0
+   tag=0
    do i=1,n
       do j=1,n
          if(flag(i,j)==0)then
@@ -27,22 +27,22 @@ program main
             flag(i,j)=tag
             call dfs([i,j],tag,area,length)
             res=res+area*length
-            print*,area,length
          end if
       end do
    end do
    print*,res
    res=0
+   cnt=0
    do k=1,tag
       length=0
       do j=1,n
          do i=1,n
             if(flag(i,j)==k)then
-               call side([i,j],tag,length)
+               call side([i,j],length)
             end if
          end do
       end do
-      print*,length
+      res=res+count(flag==k)*length
    end do
    print*,res
 contains
@@ -71,23 +71,20 @@ contains
       end do
    end subroutine dfs
 
-   recursive subroutine side(idx,tag,length)
-      integer,intent(in)::idx(2),tag
+   recursive subroutine side(idx,length)
+      integer,intent(in)::idx(2)
       integer,intent(inout)::length
       integer::idy(2),i
       integer,parameter::move(2,4)=reshape([-1,0,1,0,0,1,0,-1],[2,4])
       do i=1,4
          idy=idx+move(:,i)
          if(.not.all(idy<=n.and.idy>=1))then ! map boundary
-            print"(*(g0))","[idy']",idx,idy,check_same_side(idx,i,tag,1)
-            if(.not.check_same_side(idx,i,tag,1)) length=length+1
+            if(.not.check_same_side(idx,i,1)) length=length+1
             cnt(i,idx(1),idx(2))=1
             cycle
          else
             if(a(idy(1),idy(2))/=a(idx(1),idx(2)))then ! another area boundary
-               ! if(tag==2)print*,"[idy']",idy
-               print"(*(g0))","[idy']",idx,idy,check_same_side(idx,i,tag,2)
-               if(.not.check_same_side(idx,i,tag,2)) length=length+1
+               if(.not.check_same_side(idx,i,2)) length=length+1
                cnt(i,idx(1),idx(2))=1
                cycle
             end if
@@ -95,8 +92,8 @@ contains
       end do
    end subroutine side
 
-   logical function check_same_side(idx,mv,tag,type)result(res)
-      integer,intent(in)::idx(2),mv,tag,type
+   logical function check_same_side(idx,mv,type)result(res)
+      integer,intent(in)::idx(2),mv,type
       integer::idy(2),i,j
       integer,parameter::move(2,4)=reshape([-1,0,1,0,0,1,0,-1],[2,4])
       integer,parameter::map(2,4)=reshape([3,4,3,4,1,2,1,2],[2,4])
@@ -117,7 +114,6 @@ contains
          else
             if(.not.all(idy<=n.and.idy>=1))cycle
             res=a(idy(1),idy(2))/=a(idx(1),idx(2))
-            ! print*,res
             if(res)return
          end if
       end do
