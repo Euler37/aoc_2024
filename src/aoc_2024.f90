@@ -18,19 +18,23 @@ contains
       character,intent(in)::str
       res=any(ichar(str)==[32,9,10,11,12,13])
    end function isspace
-
+   
    integer function strtol(str,p)result(res)
       character(len=*),intent(in)::str
       integer,intent(inout)::p
       integer::i
       res=0
       do
+         if(str(p:p)=="-".and.p+1<=len(str))then
+            if(isdigit(str(p+1:p+1)))exit
+         end if
          if(isdigit(str(p:p)))exit
          p=p+1
          if(p>len(str))return
       end do
       ! find pos
       i=p
+      p=p+1
       do
          if(.not.isdigit(str(p:p)))exit
          p=p+1
@@ -38,6 +42,7 @@ contains
       end do
       res=tonum(str(i:p-1))
    end function strtol
+
 
    pure function tostring32(value)result(res)
       integer(4),intent(in)      :: value
