@@ -22,30 +22,21 @@ contains
    integer function strtol(str,p)result(res)
       character(len=*),intent(in)::str
       integer,intent(inout)::p
-      character(len=*),parameter::num="-+0123456789"
       integer::i
       res=0
       do
-         if(isspace(str(p:p)))then
-            p=p+1
-         else
-            exit
-         end if
+         if(isdigit(str(p:p)))exit
+         p=p+1
+         if(p>len(str))return
       end do
-      !第一个位置
-      if(scan(str(p:p),num)/=0)then
-         i=p
-         if(scan(str(p:p),num(:2))/=0)p=p+1
-         do
-            if(scan(str(p:p),num(3:))/=0)then
-               p=p+1
-               if(p>len(str))exit
-               cycle
-            end if
-            exit
-         end do
-         res=tonum(str(i:p-1))
-      end if
+      ! find pos
+      i=p
+      do
+         if(.not.isdigit(str(p:p)))exit
+         p=p+1
+         if(p>len(str))exit
+      end do
+      res=tonum(str(i:p-1))
    end function strtol
 
    pure function tostring32(value)result(res)
