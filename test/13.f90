@@ -2,24 +2,24 @@ program main
    use aoc_2024
    implicit none
    character(len=100)::str
-   integer::ios
+   integer::ios,p
    integer(8)::ab(2,2),xy(2),res,res2,xy2(2)
    open(10,file="data/13.txt")
    res=0
+   str=""
    do
-      str=""
+      p=1
       read(10,"(A)")str
-      str=str(13:)
-      call replace(str,"Y"," "); call replace(str,"+"," ")
-      read(str,*)ab(:,1)
+      ab(1,1)=strtol(str,p)
+      ab(2,1)=strtol(str,p)
+      p=1
       read(10,"(A)")str
-      str=str(13:)
-      call replace(str,"Y"," "); call replace(str,"+"," ")
-      read(str,*)ab(:,2)
+      ab(1,2)=strtol(str,p)
+      ab(2,2)=strtol(str,p)
+      p=1
       read(10,"(A)")str
-      str=str(10:)
-      call replace(str,"Y"," "); call replace(str,"="," ")
-      read(str,*)xy
+      xy(1)=strtol(str,p)
+      xy(2)=strtol(str,p)
       xy2=10000000000000_8+xy
       call solve(ab,xy)
       res =res+sum(xy*[3,1])
