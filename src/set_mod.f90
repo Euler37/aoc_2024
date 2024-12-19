@@ -68,6 +68,8 @@ contains
       !this ->  a b c 
       !     ptr 
       this%next=>ptr%next
+      deallocate(ptr%key)
+      nullify(ptr%next)
       deallocate(ptr)
    end subroutine list_remove
 
