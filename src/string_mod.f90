@@ -15,7 +15,41 @@ module string_mod
       module procedure split_string
    end interface
 
+   interface operator(.in.)
+      module procedure instrarray
+      module procedure instringarray
+   end interface
+
+   interface len
+      module procedure len_string
+   end interface
+
 contains
+   integer elemental function len_string(str)result(res)
+      type(string),intent(in)::str
+      res=len(str%str)
+   end function len_string
+
+
+   logical function instrarray(str,arr)result(res)
+      character(len=*),intent(in)::str
+      type(string),intent(in)::arr(:)
+      integer::i
+      res=.false.
+      do i=1,size(arr)
+         if(arr(i)%str==str)then
+            res=.true.
+            exit
+         end if
+      end do
+   end function instrarray
+
+   logical function instringarray(str,arr)result(res)
+      type(string),intent(in)::str
+      type(string),intent(in)::arr(:)
+      integer::i
+      res=instrarray(str%str,arr)
+   end function instringarray
 
    elemental integer function size_string(this)result(res)
       class(string),intent(in)::this
@@ -45,6 +79,7 @@ contains
       character(len=*),intent(in)::sep
       logical,intent(in)::skip
       type(string),allocatable::res(:)
+      type(string),allocatable::cap(:)
       type(string)::tmp
       integer::start,end,l,ls,i,num
       start=1
@@ -56,17 +91,22 @@ contains
          start=end
          if(skip)then
             do i=end,ls,l
-               if(.not.str(i:i+l-1)==sep)exit
-               start=start+l
+               if(str(i:i+l-1)==sep)then
+                  start=start+l
+               else
+                  exit
+               end if
             end do
          end if
          end=index(str(start:),sep)
          if(end==0)exit
          end=end+start-1
+         tmp=str(start:end-1)
          num=num+1
          end=end+l
       end do
       if(ls>=start)then
+         tmp=str(start:ls)
          num=num+1
       end if
       allocate(res(num))
@@ -77,8 +117,11 @@ contains
          start=end
          if(skip)then
             do i=end,ls,l
-               if(.not.str(i:i+l-1)==sep)exit
-               start=start+l
+               if(str(i:i+l-1)==sep)then
+                  start=start+l
+               else
+                  exit
+               end if
             end do
          end if
          end=index(str(start:),sep)
