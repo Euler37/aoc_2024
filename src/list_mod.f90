@@ -1,20 +1,22 @@
+
+
 module list_mod
    ! linux kernal list
    implicit none
-    private
+   private
    public::list,list_iter
    type list
       class(*),allocatable::val
       type(list),pointer::next=>null()
       type(list),pointer::prev=>null()
    contains
-     procedure::init  =>list_init
+     procedure::init =>list_init
      procedure::append=>add_tail
      procedure::front =>add_head
      procedure::remove=>list_remove
-     procedure::view  =>list_view
-     procedure::clean =>list_final
-     procedure::empty =>list_empty
+     procedure::view =>list_view
+     procedure::clean=>list_final
+     procedure::empty=>list_empty
    end type list
 
    type list_iter
@@ -93,6 +95,9 @@ contains
         end if
         ptr%prev%next=>ptr%next
         ptr%next%prev=>ptr%prev
+        deallocate(ptr%val)
+        nullify(ptr%next)
+        nullify(ptr%prev)
         deallocate(ptr)
    end subroutine list_remove
 
