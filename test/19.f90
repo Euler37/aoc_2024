@@ -13,7 +13,8 @@ program main
    type(set)::st
    open(10,file="data/19.txt")
    read(10,"(A)")str
-   pattern=split(str,", ",.true.)
+   !pattern=split(str,", ",.true.)
+   call split(str,", ",pattern,.true.)
    maxlen=maxval(len(pattern))
    call st%init(eq,bit)
    do i=1,size(pattern)
