@@ -44,8 +44,8 @@ module set_mod
       type(node),pointer::pos
       type(set),pointer::h
     contains
-          procedure,pass::init => setiter_init
-          procedure,pass::next => setiter_next
+          procedure,pass::init => set_iter_init
+          procedure,pass::next => set_iter_next
    end type set_iter
 contains
    subroutine list_init(this)
@@ -71,15 +71,15 @@ contains
       deallocate(ptr)
    end subroutine list_remove
 
-   subroutine setiter_init(this,h)
+   subroutine set_iter_init(this,h)
       class(set_iter),intent(inout)::this
       type(set),intent(in),target::h
       this%size=1
       this%h  =>h
       this%pos=>h%a(1)%next
-   end subroutine setiter_init
+   end subroutine set_iter_init
 
-   logical function setiter_next(this,key)result(res)
+   logical function set_iter_next(this,key)result(res)
       class(set_iter),intent(inout),target::this
       class(*),intent(inout)::key
       res=.true.
@@ -97,7 +97,7 @@ contains
       end do
       call this%h%eq(key,this%pos%key)
       this%pos=>this%pos%next
-   end function setiter_next
+   end function set_iter_next
 
    subroutine set_init(this,eq,bit)
       class(set),intent(inout)::this
