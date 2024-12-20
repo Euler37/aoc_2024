@@ -152,9 +152,7 @@ contains
       res=0
       do
          read(unit,"(A)",iostat=ios)c
-         if(ios/=0)then
-            exit
-         end if
+         if(ios/=0)exit
          res=res+1
       end do
       close(unit)
