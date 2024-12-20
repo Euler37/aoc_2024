@@ -4,6 +4,16 @@ module aoc_2024
      module procedure tostring32
      module procedure tostring64
   end interface
+
+  interface gcd
+    modulo procedure gcd_i4
+    modulo procedure gcd_i8
+  end interface
+
+  interface lcm
+    modulo procedure lcm_i4
+    modulo procedure lcm_i8
+  end interface
 contains
    subroutine replace(str,b,c)
       character(len=*),intent(inout)::str
@@ -192,38 +202,38 @@ contains
       res=real(tic,8)/rate
    end function clock
 
-    integer(8) function string_hashcode(str)result(h)
-        character(len=*),intent(in)::str
-        integer::i
-        integer(8)::g
-        integer(8),parameter::PP=int(z"F0000000",8)
-        h=1
-        do i=1,len(str)
-            h=shiftl(h,4)+ichar(str(i:i))
-            g=iand(h,pp)
-            if(g/=0)h=ieor(h,shiftl(g,24))
-            h=iand(h,not(g))
-        end do
-    end function string_hashcode
-
-    elemental integer(8) function lcm(m,n)result(r)
-       integer(8),intent(in)::m,n
+    elemental integer function lcm_i4(m,n)result(r)
+       integer,value::m,n
        r=m*n/gcd(m,n)
-    end function lcm
+    end function lcm_i4
+    
+    elemental integer(8) function lcm_i8(m,n)result(r)
+       integer(8),value::m,n
+       r=m*n/gcd(m,n)
+    end function lcm_i8
 
-    elemental integer(8) function gcd(m,n)result(r)
-       integer(8),intent(in)::m,n
-       integer(8)::a,b
-       a=max(m,n)
-       b=min(m,n)
-       do
-          r=mod(a,b)
-          if(r==0)exit
-          a=b
-          b=r
-       end do
-       r=b
-    end function gcd
+   elemental integer function gcd_i4(m,n)result(r)
+      integer,value::m,n
+      do
+         r=mod(m,n)
+         if(r==0)exit
+         m=n
+         n=r
+      end do
+      r=n
+   end function gcd_i4
+   
+   elemental integer(8) function gcd_i8(m,n)result(r)
+      integer(8),value::m,n
+      do
+         r=mod(m,n)
+         if(r==0)exit
+         m=n
+         n=r
+      end do
+      r=n
+   end function gcd_i8
+
 
     logical function next_permutation(a)result(found)
         character(len=1),intent(inout)::a(:)
