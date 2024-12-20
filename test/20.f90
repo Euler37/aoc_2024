@@ -11,12 +11,8 @@ program main
       integer::lens
       integer::idx(2)
    end type node
-   character(len=200)::str
    integer::start(2)
-   open(10,file=filename)
-   read(10,"(A)")str
-   close(10)
-   n=len_trim(str)
+   n=getrow(filename)
    allocate(a(n,n))
    allocate(flag(n,n))
    flag=0
