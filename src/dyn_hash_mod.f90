@@ -28,7 +28,7 @@ module dyn_hash_mod
       ! final::final_node
    end type node
 
-   integer,parameter::mdim=17
+   integer,parameter::mdim=997
    type dyn_hashmap
       integer::num
       type(node)::a(mdim)
