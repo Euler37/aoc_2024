@@ -202,20 +202,34 @@ contains
          res=all(pa==pb)
       end if
    end function eqv
-
-
-   integer(8) function hash_code(p)result(h)
-      integer(1)::p(:)
+   
+   pure integer function hash_code(p)result(h)
+      integer(1),intent(in)::p(:)
       integer::i
-      integer(8)::g
-      integer(8),parameter::pp=int( z'cbf29ce484222325',8)
-      integer(8),parameter::prime = int( z'100000001b3', 8 )
-      h=1
+      integer::g
+      integer,parameter::pp=999999937
+      integer,parameter::prime=100000037
+      h=37
       do i=1,size(p)
          h=h+p(i)*prime
-         h=ieor(h,pp)
+         ! h=ieor(h,pp)
+         h=h*pp
       end do
    end function hash_code
+
+
+   !integer(8) function hash_code(p)result(h)
+   !   integer(1)::p(:)
+   !   integer::i
+   !   integer(8)::g
+   !   integer(8),parameter::pp=int( z'cbf29ce484222325',8)
+   !   integer(8),parameter::prime = int( z'100000001b3', 8 )
+   !   h=1
+   !   do i=1,size(p)
+   !      h=h+p(i)*prime
+   !      h=ieor(h,pp)
+   !   end do
+   !end function hash_code
 
    ! integer(8) function hash_code(p)result(h)
       ! integer(1)::p(:)
