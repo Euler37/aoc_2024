@@ -283,7 +283,8 @@ contains
       h=37
       do i=1,size(p)
          h=h+p(i)*prime
-         h=ieor(h,pp)
+         !h=ieor(h,pp)
+         h=h*pp
       end do
    end function hash_code
 
