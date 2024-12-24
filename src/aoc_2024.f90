@@ -6,13 +6,13 @@ module aoc_2024
   end interface
 
   interface gcd
-    modulo procedure gcd_i4
-    modulo procedure gcd_i8
+    module procedure gcd_i4
+    module procedure gcd_i8
   end interface
 
   interface lcm
-    modulo procedure lcm_i4
-    modulo procedure lcm_i8
+    module procedure lcm_i4
+    module procedure lcm_i8
   end interface
 contains
    subroutine replace(str,b,c)
