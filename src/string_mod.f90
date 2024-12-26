@@ -87,7 +87,7 @@ contains
                start=start+l
             end do
          end if
-         end=index(str(start:),sep)+start
+         end=index(str(start:ls),sep)+start
          if(end==start)exit
          num=num+1
       end do
@@ -104,7 +104,7 @@ contains
                 start=start+l
             end do
          end if
-         end=index(str(start:),sep)
+         end=index(str(start:ls),sep)
          if(end==0)exit
          end=end+start-1
          num=num+1
