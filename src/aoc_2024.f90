@@ -212,16 +212,16 @@ contains
 
    recursive elemental integer function gcd_i4(m,n)result(r)
       integer,value,intent(in)::m,n
-      r=m
-      if(n==0)return
-      r=gcd_i4(n,mod(m,n))
+      if(n==0)then;r=m
+      else        ;r=gcd_i4(n,mod(m,n))
+      end if
    end function gcd_i4
 
   recursive elemental integer(8) function gcd_i8(m,n)result(r)
       integer(8),value,intent(in)::m,n
-      r=m
-      if(n==0)return
-      r=gcd_i8(n,mod(m,n))
+      if(n==0)then;r=m
+      else        ;r=gcd_i8(n,mod(m,n))
+      end if
    end function gcd_i8
 
     logical function next_permutation(a)result(found)
