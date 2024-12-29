@@ -210,28 +210,19 @@ contains
        r=m*n/gcd(m,n)
     end function lcm_i8
 
-   elemental integer function gcd_i4(m,n)result(r)
-      integer,value::m,n
-      do
-         r=mod(m,n)
-         if(r==0)exit
-         m=n
-         n=r
-      end do
-      r=n
+   recursive elemental integer function gcd_i4(m,n)result(r)
+      integer,value,intent(in)::m,n
+      r=m
+      if(n==0)return
+      r=gcd_i4(n,mod(m,n))
    end function gcd_i4
-   
-   elemental integer(8) function gcd_i8(m,n)result(r)
-      integer(8),value::m,n
-      do
-         r=mod(m,n)
-         if(r==0)exit
-         m=n
-         n=r
-      end do
-      r=n
-   end function gcd_i8
 
+  recursive elemental integer(8) function gcd_i8(m,n)result(r)
+      integer(8),value,intent(in)::m,n
+      r=m
+      if(n==0)return
+      r=gcd_i8(n,mod(m,n))
+   end function gcd_i8
 
     logical function next_permutation(a)result(found)
         character(len=1),intent(inout)::a(:)
