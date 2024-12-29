@@ -202,12 +202,12 @@ contains
 
     elemental integer function lcm_i4(m,n)result(r)
        integer,value::m,n
-       r=m*n/gcd(m,n)
+       r=m/gcd(m,n)*n
     end function lcm_i4
     
     elemental integer(8) function lcm_i8(m,n)result(r)
        integer(8),value::m,n
-       r=m*n/gcd(m,n)
+       r=m/gcd(m,n)*n
     end function lcm_i8
 
    recursive elemental integer function gcd_i4(m,n)result(r)
